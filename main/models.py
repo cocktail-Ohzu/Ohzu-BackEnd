@@ -92,17 +92,23 @@ class Cocktail(models.Model):
     color = models.CharField(max_length=10)
     recipe = models.TextField()
     ohzu_point = models.TextField()
-    base = TaggableManager(through=ThroughBaseTag)
-    flavor = TaggableManager(through=ThroughFlavorTag)
-    mood = TaggableManager(through=ThroughMoodTag)
-    ornament = TaggableManager(through=ThroughOrnamentTag)  # 가니쉬
-    weather_and_season = TaggableManager(through=ThroughWeatherSeasonTag)
-    ingredients_rec = TaggableManager(blank=True, through=ThroughIngredientsRecTag)  # 다른 재료 추천
+    base = TaggableManager(through=ThroughBaseTag, help_text='List all the available base tags here.')
+    flavor = TaggableManager(through=ThroughFlavorTag, help_text='List all the available flavor tags here.')
+    mood = TaggableManager(through=ThroughMoodTag, help_text='List all the available mood tags here.')
+    ornament = TaggableManager(through=ThroughOrnamentTag, help_text='List all the available ornament tags here.')
+    weather_and_season = TaggableManager(through=ThroughWeatherSeasonTag, help_text='List all the available weather and season tags here.')
+    ingredients_rec = TaggableManager(blank=True, through=ThroughIngredientsRecTag, help_text='List all the available ingredients_rec tags here.')  # 다른 재료 추천
+
+    def __str__(self):
+        return self.name
 
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=20)
-    desc = models.CharField(max_length=50)
+    desc = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 # 중개 모델
