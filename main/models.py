@@ -95,7 +95,7 @@ class Cocktail(models.Model):
     base = TaggableManager(through=ThroughBaseTag, help_text='List all the available base tags here.')
     flavor = TaggableManager(through=ThroughFlavorTag, help_text='List all the available flavor tags here.')
     mood = TaggableManager(through=ThroughMoodTag, help_text='List all the available mood tags here.')
-    ornament = TaggableManager(through=ThroughOrnamentTag, help_text='List all the available ornament tags here.')
+    ornament = TaggableManager(blank=True, through=ThroughOrnamentTag, help_text='List all the available ornament tags here.')
     weather_and_season = TaggableManager(through=ThroughWeatherSeasonTag, help_text='List all the available weather and season tags here.')
     ingredients_rec = TaggableManager(blank=True, through=ThroughIngredientsRecTag, help_text='List all the available ingredients_rec tags here.')  # 다른 재료 추천
 
