@@ -1,119 +1,104 @@
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-
-from taggit.managers import TaggableManager
-from taggit.models import TagBase, GenericTaggedItemBase
 
 
-class BaseTag(TagBase):
-    class Meta:
-        verbose_name = _("BaseTag")
-        verbose_name_plural = _("BaseTags")
+# 기본 술
+class Base(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
-class ThroughBaseTag(GenericTaggedItemBase):
-    tag = models.ForeignKey(
-        BaseTag,
-        on_delete=models.CASCADE,
-    )
+# 맛
+class Flavor(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
-class FlavorTag(TagBase):
-    class Meta:
-        verbose_name = _("FlavorTag")
-        verbose_name_plural = _("FlavorTags")
+# 무드
+class Mood(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
-class ThroughFlavorTag(GenericTaggedItemBase):
-    tag = models.ForeignKey(
-        FlavorTag,
-        on_delete=models.CASCADE,
-    )
+# 가니쉬
+class Ornament(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
-class MoodTag(TagBase):
-    class Meta:
-        verbose_name = _("MoodTag")
-        verbose_name_plural = _("MoodTags")
+# 재료
+class Ingredient(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
 
 
-class ThroughMoodTag(GenericTaggedItemBase):
-    tag = models.ForeignKey(
-        MoodTag,
-        on_delete=models.CASCADE,
-    )
+# 날씨 & 계절
+class Weather(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
-class OrnamentTag(TagBase):
-    class Meta:
-        verbose_name = _("OrnamentTag")
-        verbose_name_plural = _("OrnamentTags")
-
-
-class ThroughOrnamentTag(GenericTaggedItemBase):
-    tag = models.ForeignKey(
-        OrnamentTag,
-        on_delete=models.CASCADE,
-    )
-
-
-class WeatherSeasonTag(TagBase):
-    class Meta:
-        verbose_name = _("WeatherSeasonTag")
-        verbose_name_plural = _("WeatherSeasonTags")
-
-
-class ThroughWeatherSeasonTag(GenericTaggedItemBase):
-    tag = models.ForeignKey(
-        WeatherSeasonTag,
-        on_delete=models.CASCADE,
-    )
-
-
-class IngredientsRecTag(TagBase):
-    class Meta:
-        verbose_name = _("IngredientsRecTag")
-        verbose_name_plural = _("IngredientsRecTags")
-
-
-class ThroughIngredientsRecTag(GenericTaggedItemBase):
-    tag = models.ForeignKey(
-        IngredientsRecTag,
-        on_delete=models.CASCADE,
-    )
-
-
+# 메인 칵테일 모델
 class Cocktail(models.Model):
     name = models.CharField(max_length=20)
     eng_name = models.CharField(max_length=20)
     img = models.URLField()
+    background_color = models.CharField(max_length=20)
     desc = models.CharField(max_length=50)  # 한줄 소개
     strength = models.IntegerField()
-    color = models.CharField(max_length=10)
+    cocktail_color = models.CharField(max_length=10)
     recipe = models.TextField()
     ohzu_point = models.TextField()
-    base = TaggableManager(through=ThroughBaseTag, help_text='List all the available base tags here.')
-    flavor = TaggableManager(through=ThroughFlavorTag, help_text='List all the available flavor tags here.')
-    mood = TaggableManager(through=ThroughMoodTag, help_text='List all the available mood tags here.')
-    ornament = TaggableManager(blank=True, through=ThroughOrnamentTag, help_text='List all the available ornament tags here.')
-    weather_and_season = TaggableManager(through=ThroughWeatherSeasonTag, help_text='List all the available weather and season tags here.')
-    ingredients_rec = TaggableManager(blank=True, through=ThroughIngredientsRecTag, help_text='List all the available ingredients_rec tags here.')  # 다른 재료 추천
+    # many to many 필드들
+    bases = models.ManyToManyField(Base, through='Cocktail_Base')  # 기본 술
+    flavors = models.ManyToManyField(Flavor)  # 맛
+    moods = models.ManyToManyField(Mood)  # 무드
+    ornaments = models.ManyToManyField(Ornament)  # 가니쉬
+    ingredients = models.ManyToManyField(Ingredient, through='Cocktail_Ingredient')  # 재료
+    weathers = models.ManyToManyField(Weather)  # 날씨 & 계절
 
     def __str__(self):
         return self.name
 
+    def get_bases(self):
+        return ", ".join([p.name for p in self.bases.all()])
 
-class Ingredient(models.Model):
-    name = models.CharField(max_length=20)
-    desc = models.CharField(max_length=100, null=True, blank=True)
+    def get_flavors(self):
+        return ", ".join([p.name for p in self.flavors.all()])
 
-    def __str__(self):
-        return self.name
+    def get_moods(self):
+        return ", ".join([p.name for p in self.moods.all()])
+
+    def get_ornaments(self):
+        return ", ".join([p.name for p in self.ornaments.all()])
+
+    def get_ingredients(self):
+        return ", ".join([p.name for p in self.ingredients.all()])
+
+    def get_weathers(self):
+        return ", ".join([p.name for p in self.weathers.all()])
 
 
-# 중개 모델
+#  칵테일 - 재료 중개모델
 class Cocktail_Ingredient(models.Model):
-    amount = models.CharField(max_length=20)
+    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)  # 해당 칵테일
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)  # 해당 재료
+    amount = models.CharField(max_length=20)  # 해당 칵테일 재료의 양
 
-    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+
+#  칵테일 - 기본 술 중개모델
+class Cocktail_Base(models.Model):
+    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)  # 해당 칵테일
+    base = models.ForeignKey(Base, on_delete=models.CASCADE)  # 해당 재료
+    amount = models.CharField(max_length=20)  # 해당 칵테일 재료의 양
