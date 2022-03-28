@@ -4,6 +4,7 @@ from django.db import models
 # 기본 술
 class Base(models.Model):
     name = models.CharField(max_length=20)
+    desc = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -36,6 +37,7 @@ class Ornament(models.Model):
 # 재료
 class Ingredient(models.Model):
     name = models.CharField(max_length=30)
+    desc = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -62,11 +64,11 @@ class Cocktail(models.Model):
     ohzu_point = models.TextField()
     # many to many 필드들
     bases = models.ManyToManyField(Base, through='Cocktail_Base')  # 기본 술
-    flavors = models.ManyToManyField(Flavor)  # 맛
-    moods = models.ManyToManyField(Mood)  # 무드
-    ornaments = models.ManyToManyField(Ornament)  # 가니쉬
+    flavors = models.ManyToManyField(Flavor, through='Cocktail_Flavor')  # 맛
+    moods = models.ManyToManyField(Mood, through='Cocktail_Mood')  # 무드
+    ornaments = models.ManyToManyField(Ornament, through='Cocktail_Ornament')  # 가니쉬
     ingredients = models.ManyToManyField(Ingredient, through='Cocktail_Ingredient')  # 재료
-    weathers = models.ManyToManyField(Weather)  # 날씨 & 계절
+    weathers = models.ManyToManyField(Weather, through='Cocktail_Weather')  # 날씨 & 계절
 
     def __str__(self):
         return self.name
@@ -90,15 +92,80 @@ class Cocktail(models.Model):
         return ", ".join([p.name for p in self.weathers.all()])
 
 
-#  칵테일 - 재료 중개모델
+# 중개 모델 #
+
+#  칵테일 - 재료 중개 모델
 class Cocktail_Ingredient(models.Model):
     cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)  # 해당 칵테일
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)  # 해당 재료
     amount = models.CharField(max_length=20)  # 해당 칵테일 재료의 양
 
+    def get_ingredient(self):
+        return self.ingredient.name
 
-#  칵테일 - 기본 술 중개모델
+    def get_cocktail(self):
+        return self.cocktail.name
+
+
+#  칵테일 - 기본 술 중개 모델
 class Cocktail_Base(models.Model):
     cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)  # 해당 칵테일
     base = models.ForeignKey(Base, on_delete=models.CASCADE)  # 해당 재료
     amount = models.CharField(max_length=20)  # 해당 칵테일 재료의 양
+
+    def get_base(self):
+        return self.base.name
+
+    def get_cocktail(self):
+        return self.cocktail.name
+
+    def get_all(self):
+        return f'{self.base.name}: {self.amount}'
+
+
+#  칵테일 - 맛 중개 모델
+class Cocktail_Flavor(models.Model):
+    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)
+    flavor = models.ForeignKey(Flavor, on_delete=models.CASCADE)
+
+    def get_flavor(self):
+        return self.flavor.name
+
+    def get_cocktail(self):
+        return self.cocktail.name
+
+
+#  칵테일 - 무드 중개 모델
+class Cocktail_Mood(models.Model):
+    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)
+    mood = models.ForeignKey(Mood, on_delete=models.CASCADE)
+
+    def get_mood(self):
+        return self.mood.name
+
+    def get_cocktail(self):
+        return self.cocktail.name
+
+
+#  칵테일 - 장식 중개 모델
+class Cocktail_Ornament(models.Model):
+    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)
+    ornament = models.ForeignKey(Ornament, on_delete=models.CASCADE)
+
+    def get_ornament(self):
+        return self.ornament.name
+
+    def get_cocktail(self):
+        return self.cocktail.name
+
+
+#  칵테일 - 날씨 중개 모델
+class Cocktail_Weather(models.Model):
+    cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)
+    weather = models.ForeignKey(Weather, on_delete=models.CASCADE)
+
+    def get_weather(self):
+        return self.weather.name
+
+    def get_cocktail(self):
+        return self.cocktail.name
