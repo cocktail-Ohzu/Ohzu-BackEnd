@@ -6,7 +6,7 @@ from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Ingredient, Ba
 class MainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cocktail
-        fields = ['id', 'img', 'name', 'eng_name', 'desc', 'strength']
+        fields = ['id', 'img', 'background_color', 'name', 'eng_name', 'desc', 'strength']
 
 
 # 디테일
