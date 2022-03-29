@@ -33,9 +33,7 @@ class DetailCocktailView(APIView):
             data["bases"] = list(bases.data)
 
             ingredients_querysets = Cocktail_Ingredient.objects.filter(cocktail=cocktail)
-            print(ingredients_querysets)
             ingredients = IngredientSerializer(ingredients_querysets, many=True)
-            print(ingredients.data)
             data['ingredients'] = list(ingredients.data)
 
             return Response(data)
