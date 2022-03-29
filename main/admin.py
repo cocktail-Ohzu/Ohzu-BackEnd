@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Cocktail, Base, Flavor, Mood, Ornament, Ingredient, Weather, Cocktail_Ingredient, Cocktail_Base
+from .models import Cocktail, Base, Flavor, Mood, Ornament, Ingredient, Weather,\
+    Cocktail_Ingredient, Cocktail_Base, Cocktail_Flavor, Cocktail_Mood, Cocktail_Weather, Cocktail_Ornament
 
 
 @admin.register(Base)
@@ -47,3 +48,23 @@ class Cocktail_IngredientAdmin(admin.ModelAdmin):
 @admin.register(Cocktail_Base)
 class Cocktail_BaseAdmin(admin.ModelAdmin):
     list_display = ['id', 'cocktail', 'base', 'amount']
+
+
+@admin.register(Cocktail_Flavor)
+class Cocktail_FlavorAdmin(admin.ModelAdmin):
+    list_display = ['id', 'cocktail', 'flavor']
+
+
+@admin.register(Cocktail_Mood)
+class Cocktail_MoodAdmin(admin.ModelAdmin):
+    list_display = ['id', 'cocktail', 'mood']
+
+
+@admin.register(Cocktail_Weather)
+class Cocktail_WeatherAdmin(admin.ModelAdmin):
+    list_display = ['id', 'cocktail', 'weather']
+
+
+@admin.register(Cocktail_Ornament)
+class Cocktail_OrnamentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'cocktail', 'ornament']
