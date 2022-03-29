@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Ingredient, Base
+from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Ingredient, Base, Mood, Weather, Ornament, Flavor
 
 
 # 메인
@@ -22,34 +22,26 @@ class DetailSerializer(serializers.ModelSerializer):
     weathers = TagListingField(many=True, read_only=True)
     ornaments = TagListingField(many=True, read_only=True)
 
-    # def get_flavors(self, obj):
-    #     return obj.get_flavors()
-    #
-    # def get_moods(self, obj):
-    #     return obj.get_moods()
-    #
-    # def get_weathers(self, obj):
-    #     return obj.get_weathers()
-    #
-    # def get_ornaments(self, obj):
-    #     return obj.get_ornaments()
-
     class Meta:
         model = Cocktail
         fields = ['id', 'name', 'eng_name', 'img', 'desc', 'strength',
                   'flavors', 'moods', 'weathers', 'ornaments',
-                  'recipe']
+                  'recipe', 'ohzu_point']
 
 
 class BaseSerializer(serializers.ModelSerializer):
     base = serializers.SerializerMethodField()
+    desc = serializers.SerializerMethodField()
 
     def get_base(self, obj):
         return obj.base.name
 
+    def get_desc(self, obj):
+        return obj.base.desc
+
     class Meta:
         model = Cocktail_Base
-        fields = ['base', 'amount']
+        fields = ['base', 'desc', 'amount']
 
 
 class IngredientSerializer(serializers.ModelSerializer):
