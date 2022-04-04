@@ -9,12 +9,9 @@ from .serializers import MainSerializer, DetailSerializer, BaseSerializer, Ingre
 # 메인 화면
 class MainCocktailView(APIView):
     def get(self, request):
-        # 최종
-        # today = datetime.today()
-        # today_cocktail = (today.year + today.month + today.day) % 36  # 오늘의 추천 칵테일 랜덤
-        # cocktail = get_object_or_404(Cocktail, id=today_cocktail+1)
-        # 테스트용
-        cocktail = get_object_or_404(Cocktail, id=1)
+        today = datetime.today()
+        today_cocktail = (today.year + today.month + today.day) % 36  # 오늘의 추천 칵테일 랜덤
+        cocktail = get_object_or_404(Cocktail, id=today_cocktail+1)
         serializer = MainSerializer(cocktail)
         return Response(serializer.data)
 
