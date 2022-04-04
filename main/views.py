@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from datetime import datetime
 from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient
-from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer
+from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer, SearchSerializer
 
 
 # 메인 화면
@@ -38,5 +38,16 @@ class DetailCocktailView(APIView):
 
             return Response(data)
 
+        except:
+            return Response({"message": "error"})
+
+
+# 검색 api
+class SearchTagView(APIView):
+    def get(self, request):
+        try:
+            cocktails = Cocktail.objects.all()
+            serializer = SearchSerializer(cocktails, many=True)
+            return Response(serializer.data)
         except:
             return Response({"message": "error"})
