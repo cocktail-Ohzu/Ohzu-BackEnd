@@ -61,7 +61,7 @@ class Cocktail(models.Model):
     strength = models.IntegerField()
     cocktail_color = models.CharField(max_length=10)
     recipe = models.TextField()
-    ohzu_point = models.TextField()
+    ohzu_point = models.TextField(blank=True)
     # many to many 필드들
     bases = models.ManyToManyField(Base, through='Cocktail_Base')  # 기본 술
     flavors = models.ManyToManyField(Flavor, through='Cocktail_Flavor')  # 맛
