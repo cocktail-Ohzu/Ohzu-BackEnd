@@ -119,16 +119,12 @@ class Cocktail_Ingredient(models.Model):
 class Cocktail_Base(models.Model):
     cocktail = models.ForeignKey(Cocktail, on_delete=models.CASCADE)  # 해당 칵테일
     base = models.ForeignKey(Base, on_delete=models.CASCADE)  # 해당 재료
-    amount = models.CharField(max_length=20)  # 해당 칵테일 재료의 양
 
     def get_base(self):
         return self.base.name
 
     def get_cocktail(self):
         return self.cocktail.name
-
-    def get_all(self):
-        return f'{self.base.name}: {self.amount}'
 
 
 #  칵테일 - 맛 중개 모델
