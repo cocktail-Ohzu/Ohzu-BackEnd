@@ -47,7 +47,7 @@ class Cocktail_IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Cocktail_Base)
 class Cocktail_BaseAdmin(admin.ModelAdmin):
-    list_display = ['id', 'cocktail', 'base', 'amount']
+    list_display = ['id', 'cocktail', 'base']
 
 
 @admin.register(Cocktail_Flavor)

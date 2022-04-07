@@ -41,7 +41,7 @@ class BaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cocktail_Base
-        fields = ['base', 'desc', 'amount']
+        fields = ['base', 'desc']
 
 
 class IngredientSerializer(serializers.ModelSerializer):
