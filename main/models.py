@@ -5,6 +5,7 @@ from django.db import models
 class Base(models.Model):
     name = models.CharField(max_length=20)
     desc = models.CharField(max_length=50, blank=True, null=True)
+    tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
     def __str__(self):
         return self.name
@@ -13,6 +14,8 @@ class Base(models.Model):
 # 맛
 class Flavor(models.Model):
     name = models.CharField(max_length=20)
+    tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
+    group = models.PositiveIntegerField(default=0)  # 그룹
 
     def __str__(self):
         return self.name
@@ -21,6 +24,8 @@ class Flavor(models.Model):
 # 무드
 class Mood(models.Model):
     name = models.CharField(max_length=20)
+    tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
+    group = models.PositiveIntegerField(default=0)  # 그룹
 
     def __str__(self):
         return self.name
@@ -29,6 +34,7 @@ class Mood(models.Model):
 # 가니쉬
 class Ornament(models.Model):
     name = models.CharField(max_length=20)
+    tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
     def __str__(self):
         return self.name
@@ -38,6 +44,7 @@ class Ornament(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=50, blank=True, null=True)
+    tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
     def __str__(self):
         return self.name
@@ -46,6 +53,7 @@ class Ingredient(models.Model):
 # 날씨 & 계절
 class Weather(models.Model):
     name = models.CharField(max_length=20)
+    tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
     def __str__(self):
         return self.name
