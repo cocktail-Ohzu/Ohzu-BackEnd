@@ -3,7 +3,7 @@ from django.db import models
 
 # 기본 술
 class Base(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     desc = models.CharField(max_length=50, blank=True, null=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
@@ -13,7 +13,7 @@ class Base(models.Model):
 
 # 맛
 class Flavor(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
     group = models.PositiveIntegerField(default=0)  # 그룹
 
@@ -23,7 +23,7 @@ class Flavor(models.Model):
 
 # 무드
 class Mood(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
     group = models.PositiveIntegerField(default=0)  # 그룹
 
@@ -33,7 +33,7 @@ class Mood(models.Model):
 
 # 가니쉬
 class Ornament(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
     def __str__(self):
@@ -42,7 +42,7 @@ class Ornament(models.Model):
 
 # 재료
 class Ingredient(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     desc = models.CharField(max_length=50, blank=True, null=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
@@ -52,7 +52,7 @@ class Ingredient(models.Model):
 
 # 날씨 & 계절
 class Weather(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
 
     def __str__(self):
@@ -61,7 +61,7 @@ class Weather(models.Model):
 
 # 메인 칵테일 모델
 class Cocktail(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     eng_name = models.CharField(max_length=20)
     img = models.URLField()
     background_color = models.CharField(max_length=20)
