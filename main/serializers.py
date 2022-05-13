@@ -16,11 +16,39 @@ class TagListingField(serializers.RelatedField):
         return value.name
 
 
+# 맛
+class FlavorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Flavor
+        fields = ['name', 'tag_color']
+
+
+# 무드
+class MoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mood
+        fields = ['name', 'tag_color']
+
+
+# 날씨 / 계절
+class WeatherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Weather
+        fields = ['name', 'tag_color']
+
+
+# 장식
+class OrnamentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ornament
+        fields = ['name', 'tag_color']
+
+
 class DetailSerializer(serializers.ModelSerializer):
-    flavors = TagListingField(many=True, read_only=True)
-    moods = TagListingField(many=True, read_only=True)
-    weathers = TagListingField(many=True, read_only=True)
-    ornaments = TagListingField(many=True, read_only=True)
+    flavors = FlavorSerializer(many=True, read_only=True)
+    moods = MoodSerializer(many=True, read_only=True)
+    weathers = WeatherSerializer(many=True, read_only=True)
+    ornaments = OrnamentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cocktail
@@ -32,6 +60,7 @@ class DetailSerializer(serializers.ModelSerializer):
 class BaseSerializer(serializers.ModelSerializer):
     base = serializers.SerializerMethodField()
     desc = serializers.SerializerMethodField()
+    tag_color = serializers.SerializerMethodField()
 
     def get_base(self, obj):
         return obj.base.name
@@ -39,20 +68,27 @@ class BaseSerializer(serializers.ModelSerializer):
     def get_desc(self, obj):
         return obj.base.desc
 
+    def get_tag_color(self, obj):
+        return obj.base.tag_color
+
     class Meta:
         model = Cocktail_Base
-        fields = ['base', 'desc']
+        fields = ['base', 'tag_color', 'desc']
 
 
 class IngredientSerializer(serializers.ModelSerializer):
     ingredient = serializers.SerializerMethodField()
+    tag_color = serializers.SerializerMethodField()
 
     def get_ingredient(self,obj):
         return obj.ingredient.name
 
+    def get_tag_color(self, obj):
+        return obj.ingredient.tag_color
+
     class Meta:
         model = Cocktail_Ingredient
-        fields = ['ingredient', 'amount']
+        fields = ['ingredient', 'tag_color', 'amount']
 
 
 # 검색 api
