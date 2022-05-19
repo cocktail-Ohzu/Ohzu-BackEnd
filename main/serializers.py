@@ -44,6 +44,20 @@ class OrnamentSerializer(serializers.ModelSerializer):
         fields = ['name', 'tag_color']
 
 
+# 검색 - Base
+class SearchBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Base
+        fields = ['name', 'tag_color']
+
+
+# 검색 - Ingredients
+class SearchIngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        fields = ['name', 'tag_color']
+
+
 class DetailSerializer(serializers.ModelSerializer):
     flavors = FlavorSerializer(many=True, read_only=True)
     moods = MoodSerializer(many=True, read_only=True)
@@ -93,8 +107,8 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 # 검색 api
 class SearchSerializer(serializers.ModelSerializer):
-    bases = serializers.SerializerMethodField()
-    ingredients = serializers.SerializerMethodField()
+    bases = SearchBaseSerializer(many=True, read_only=True)
+    ingredients = SearchIngredientSerializer(many=True, read_only=True)
     # flavors = serializers.SerializerMethodField()
     # moods = serializers.SerializerMethodField()
     # ornaments = serializers.SerializerMethodField()
@@ -104,11 +118,11 @@ class SearchSerializer(serializers.ModelSerializer):
     weathers = WeatherSerializer(many=True, read_only=True)
     ornaments = OrnamentSerializer(many=True, read_only=True)
 
-    def get_bases(self, obj):
-        return ", ".join([p.name for p in obj.bases.all()])
-
-    def get_ingredients(self, obj):
-        return ", ".join([p.name for p in obj.ingredients.all()])
+    # def get_bases(self, obj):
+    #     return ", ".join([p.name for p in obj.bases.all()])
+    #
+    # def get_ingredients(self, obj):
+    #     return ", ".join([p.name for p in obj.ingredients.all()])
 
     # def get_flavors(self, obj):
     #     return ", ".join([p.name for p in obj.flavors.all()])
@@ -116,10 +130,9 @@ class SearchSerializer(serializers.ModelSerializer):
     # def get_moods(self, obj):
     #     return ", ".join([p.name for p in obj.moods.all()])
     #
-    # def get_ornaments(self, obj):
-    #     return ", ".join([p.name for p in obj.ornaments.all()])
-    # def get_weathers(self, obj):
-    #     return ", ".join([p.name for p in obj.weathers.all()])
+    # def get_ingredients(self, obj):
+    #     return ", ".join([p.name for p in obj.ingredients.all()])
+
 
 
     class Meta:
