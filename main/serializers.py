@@ -94,32 +94,35 @@ class IngredientSerializer(serializers.ModelSerializer):
 # 검색 api
 class SearchSerializer(serializers.ModelSerializer):
     bases = serializers.SerializerMethodField()
-    flavors = serializers.SerializerMethodField()
-    moods = serializers.SerializerMethodField()
-    ornaments = serializers.SerializerMethodField()
     ingredients = serializers.SerializerMethodField()
-    weathers = serializers.SerializerMethodField()
+    # flavors = serializers.SerializerMethodField()
+    # moods = serializers.SerializerMethodField()
+    # ornaments = serializers.SerializerMethodField()
+    # weathers = serializers.SerializerMethodField()
+    flavors = FlavorSerializer(many=True, read_only=True)
+    moods = MoodSerializer(many=True, read_only=True)
+    weathers = WeatherSerializer(many=True, read_only=True)
+    ornaments = OrnamentSerializer(many=True, read_only=True)
 
     def get_bases(self, obj):
         return ", ".join([p.name for p in obj.bases.all()])
 
-    def get_flavors(self, obj):
-        return ", ".join([p.name for p in obj.flavors.all()])
-
-    def get_moods(self, obj):
-        return ", ".join([p.name for p in obj.moods.all()])
-
-    def get_ornaments(self, obj):
-        return ", ".join([p.name for p in obj.ornaments.all()])
-
     def get_ingredients(self, obj):
         return ", ".join([p.name for p in obj.ingredients.all()])
 
-    def get_weathers(self, obj):
-        return ", ".join([p.name for p in obj.weathers.all()])
+    # def get_flavors(self, obj):
+    #     return ", ".join([p.name for p in obj.flavors.all()])
+    #
+    # def get_moods(self, obj):
+    #     return ", ".join([p.name for p in obj.moods.all()])
+    #
+    # def get_ornaments(self, obj):
+    #     return ", ".join([p.name for p in obj.ornaments.all()])
+    # def get_weathers(self, obj):
+    #     return ", ".join([p.name for p in obj.weathers.all()])
 
 
     class Meta:
         model = Cocktail
         fields = ['id', 'name', 'img', 'background_color',
-                  'bases', 'flavors', 'moods', 'ornaments', 'ingredients', 'weathers']
+                  'bases', 'ingredients', 'flavors', 'moods', 'weathers', 'ornaments']
