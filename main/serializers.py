@@ -52,7 +52,7 @@ class DetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cocktail
-        fields = ['id', 'name', 'eng_name', 'background_color', 'eng_name', 'img', 'desc', 'strength',
+        fields = ['id', 'name', 'eng_name', 'background_color', 'img', 'desc', 'strength',
                   'flavors', 'moods', 'weathers', 'ornaments',
                   'recipe', 'ohzu_point']
 
@@ -124,5 +124,5 @@ class SearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cocktail
-        fields = ['id', 'name', 'img', 'background_color',
+        fields = ['id', 'name', 'eng_name', 'img', 'background_color',
                   'bases', 'ingredients', 'flavors', 'moods', 'weathers', 'ornaments']
