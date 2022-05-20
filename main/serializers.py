@@ -133,9 +133,14 @@ class SearchSerializer(serializers.ModelSerializer):
     # def get_ingredients(self, obj):
     #     return ", ".join([p.name for p in obj.ingredients.all()])
 
-
-
     class Meta:
         model = Cocktail
         fields = ['id', 'name', 'eng_name', 'img', 'background_color',
                   'bases', 'ingredients', 'flavors', 'moods', 'weathers', 'ornaments']
+
+
+class RecommendSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Cocktail
+        fields = ['name', 'img']
