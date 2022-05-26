@@ -181,7 +181,7 @@ class RecommendView(APIView):
 
             # 사용자가 선택한 필드들에 맞는 칵테일 빈도수 높은 순으로 정렬
             result = []
-            result_cocktail.sort(key=lambda x: result_cocktail.count(x))
+            result_cocktail = sorted(result_cocktail, key=lambda x: result_cocktail.count(x), reverse=True)
             for v in result_cocktail:
                 if v not in result:
                     result.append(v)
