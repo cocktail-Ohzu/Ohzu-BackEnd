@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from datetime import datetime
 from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Cocktail_Flavor, Cocktail_Mood, Cocktail_Weather, \
-    Cocktail_Ornament
+    Cocktail_Ornament, Flavor
 from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer, SearchSerializer, \
     RecommendSerializer
 
@@ -71,17 +71,8 @@ class RecommendView(APIView):
                 if tag_id == 'base_id':
                     base_cocktail = []
 
-                    if len(request.data['base_id']) > 1:
-
-                        for i in request.data['base_id']:
-                            bases = Cocktail_Base.objects.filter(base_id=i)
-
-                            for base in bases:
-                                result_cocktail.append(base.cocktail_id)
-                                base_cocktail.append(base.cocktail_id)
-
-                    else:
-                        bases = Cocktail_Base.objects.filter(base_id=request.data['base_id'][0])
+                    for i in request.data['base_id']:
+                        bases = Cocktail_Base.objects.filter(base_id=i)
 
                         for base in bases:
                             result_cocktail.append(base.cocktail_id)
@@ -94,17 +85,8 @@ class RecommendView(APIView):
                 if tag_id == 'ingredient_id':
                     ingredient_cocktail = []
 
-                    if len(request.data['ingredient_id']) > 1:
-
-                        for i in request.data['ingredient_id']:
-                            ingredients = Cocktail_Ingredient.objects.filter(ingredient_id=i)
-
-                            for ingredient in ingredients:
-                                result_cocktail.append(ingredient.cocktail_id)
-                                ingredient_cocktail.append(ingredient.cocktail_id)
-
-                    else:
-                        ingredients = Cocktail_Ingredient.objects.filter(ingredient_id=request.data['ingredient_id'][0])
+                    for i in request.data['ingredient_id']:
+                        ingredients = Cocktail_Ingredient.objects.filter(ingredient_id=i)
 
                         for ingredient in ingredients:
                             result_cocktail.append(ingredient.cocktail_id)
@@ -117,17 +99,8 @@ class RecommendView(APIView):
                 if tag_id == 'flavor_id':
                     flavor_cocktail = []
 
-                    if len(request.data['flavor_id']) > 1:
-
-                        for i in request.data['flavor_id']:
-                            flavors = Cocktail_Flavor.objects.filter(flavor_id=i)
-
-                            for flavor in flavors:
-                                result_cocktail.append(flavor.cocktail_id)
-                                flavor_cocktail.append(flavor.cocktail_id)
-
-                    else:
-                        flavors = Cocktail_Flavor.objects.filter(flavor_id=request.data['flavor_id'][0])
+                    for i in request.data['flavor_id']:
+                        flavors = Cocktail_Flavor.objects.filter(flavor_id=i)
 
                         for flavor in flavors:
                             result_cocktail.append(flavor.cocktail_id)
@@ -140,17 +113,8 @@ class RecommendView(APIView):
                 if tag_id == 'mood_id':
                     mood_cocktail = []
 
-                    if len(request.data['mood_id']) > 1:
-
-                        for i in request.data['mood_id']:
-                            moods = Cocktail_Mood.objects.filter(mood_id=i)
-
-                            for mood in moods:
-                                result_cocktail.append(mood.cocktail_id)
-                                mood_cocktail.append(mood.cocktail_id)
-
-                    else:
-                        moods = Cocktail_Mood.objects.filter(mood_id=request.data['mood_id'][0])
+                    for i in request.data['mood_id']:
+                        moods = Cocktail_Mood.objects.filter(mood_id=i)
 
                         for mood in moods:
                             result_cocktail.append(mood.cocktail_id)
@@ -163,17 +127,8 @@ class RecommendView(APIView):
                 if tag_id == 'weather_id':
                     weather_cocktail = []
 
-                    if len(request.data['weather_id']) > 1:
-
-                        for i in request.data['weather_id']:
-                            weathers = Cocktail_Weather.objects.filter(weather_id=i)
-
-                            for weather in weathers:
-                                result_cocktail.append(weather.cocktail_id)
-                                weather_cocktail.append(weather.cocktail_id)
-
-                    else:
-                        weathers = Cocktail_Weather.objects.filter(weather_id=request.data['weather_id'][0])
+                    for i in request.data['weather_id']:
+                        weathers = Cocktail_Weather.objects.filter(weather_id=i)
 
                         for weather in weathers:
                             result_cocktail.append(weather.cocktail_id)
@@ -186,19 +141,17 @@ class RecommendView(APIView):
                 if tag_id == 'ornament_id':
                     ornament_cocktail = []
 
-                    if len(request.data['ornament_id']) > 1:
-
-                        for i in request.data['ornament_id']:
-                            ornaments = Cocktail_Ornament.objects.filter(ornament_id=i)
-
-                            for ornament in ornaments:
-                                result_cocktail.append(ornament.cocktail_id)
-                                ornament_cocktail.append(ornament.cocktail_id)
-
-                    else:
-                        ornaments = Cocktail_Ornament.objects.filter(ornament_id=request.data['ornament_id'][0])
+                    for i in request.data['ornament_id']:
+                        ornaments = Cocktail_Ornament.objects.filter(ornament_id=i)
 
                         for ornament in ornaments:
+                            result_cocktail.append(ornament.cocktail_id)
+                            ornament_cocktail.append(ornament.cocktail_id)
+
+                    data.append(ornament_cocktail)
+                    continue
+
+                # 도수 추천
                             result_cocktail.append(ornament.cocktail_id)
                             ornament_cocktail.append(ornament.cocktail_id)
 
@@ -208,7 +161,7 @@ class RecommendView(APIView):
             # 유사한 칵테일 id 리스트
             similar_result = []
 
-            # 조건 모두 만족하는 칵테일 id 리스트
+            # 조건을 모두 만족 시키는 칵테일 id 리스트
             fit_result = []
 
             # 사용자가 선택한 필드들에 맞는 칵테일 빈도수 높은 순으로 정렬
