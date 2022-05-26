@@ -8,6 +8,13 @@ from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Cocktail_Flavo
 from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer, SearchSerializer, \
     RecommendSerializer
 
+# 도수 기준 (standard_strength[index] = [시작 도수, 끝 도수])
+standard_strength = [[0, 0], [1, 10], [12, 20], [32, 40]]
+
+#
+def strength_range(strength):
+    return standard_strength[strength - 1]
+
 
 # 메인 화면
 class MainCocktailView(APIView):
@@ -152,10 +159,17 @@ class RecommendView(APIView):
                     continue
 
                 # 도수 추천
-                            result_cocktail.append(ornament.cocktail_id)
-                            ornament_cocktail.append(ornament.cocktail_id)
+                if tag_id == 'strength':
+                    strength_cocktail = []
 
-                    data.append(ornament_cocktail)
+                    for i in request.data['strength']:
+                        cocktails = Cocktail.objects.filter(strength__range=strength_range(i))
+
+                        for cocktail in cocktails:
+                            result_cocktail.append(cocktail.id)
+                            strength_cocktail.append(cocktail.id)
+
+                    data.append(strength_cocktail)
                     continue
 
             # 유사한 칵테일 id 리스트
