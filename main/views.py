@@ -11,7 +11,8 @@ from .serializers import MainSerializer, DetailSerializer, BaseSerializer, Ingre
 # 도수 기준 (standard_strength[index] = [시작 도수, 끝 도수])
 standard_strength = [[0, 0], [1, 10], [12, 20], [32, 40]]
 
-#
+
+# 도수 번호(1~4)가 들어왔을 때, 그에 맞는 시작, 끝 도수 반환
 def strength_range(strength):
     return standard_strength[strength - 1]
 
@@ -179,8 +180,11 @@ class RecommendView(APIView):
             fit_result = []
 
             # 사용자가 선택한 필드들에 맞는 칵테일 빈도수 높은 순으로 정렬
+            result = []
             result_cocktail.sort(key=lambda x: result_cocktail.count(x))
-            result = list(set(result_cocktail))
+            for v in result_cocktail:
+                if v not in result:
+                    result.append(v)
 
             # 사용자가 선택한 필드들을 모두 만족하는 칵테일 얻기 위한 교집합 intersection 변수
             intersection = list(set(data[0]))
