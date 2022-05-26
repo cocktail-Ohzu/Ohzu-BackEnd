@@ -143,4 +143,4 @@ class RecommendSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cocktail
-        fields = ['name', 'img']
+        fields = ['id', 'name', 'img']
