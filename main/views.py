@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from datetime import datetime
 from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Cocktail_Flavor, Cocktail_Mood, Cocktail_Weather, \
-    Cocktail_Ornament, Flavor
+    Cocktail_Ornament, Flavor, Mood
 from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer, SearchSerializer, \
     RecommendSerializer
 
@@ -107,7 +107,25 @@ class RecommendView(APIView):
                 if tag_id == 'flavor_id':
                     flavor_cocktail = []
 
+                    # 검색한 맛과 유사한 태그 저장 리스트
+                    similar_flavor = []
+
+                    # 유사한 태그의 id 저장 리스트
+                    similar_flavor_id = []
+
                     for i in request.data['flavor_id']:
+                        selected_flavor = Flavor.objects.get(id=i)
+                        similar_flavor.append(selected_flavor.group)
+
+                    similar_flavor = list(set(similar_flavor))
+
+                    for group in similar_flavor:
+                        similar_flavors = Flavor.objects.filter(group=group)
+
+                        for similar_flavor in similar_flavors:
+                            similar_flavor_id.append(similar_flavor.id)
+
+                    for i in similar_flavor_id:
                         flavors = Cocktail_Flavor.objects.filter(flavor_id=i)
 
                         for flavor in flavors:
@@ -121,7 +139,25 @@ class RecommendView(APIView):
                 if tag_id == 'mood_id':
                     mood_cocktail = []
 
+                    # 검색한 맛과 유사한 태그 저장 리스트
+                    similar_mood = []
+
+                    # 유사한 태그의 id 저장 리스트
+                    similar_mood_id = []
+
                     for i in request.data['mood_id']:
+                        selected_mood = Mood.objects.get(id=i)
+                        similar_mood.append(selected_mood.group)
+
+                    similar_mood = list(set(similar_mood))
+
+                    for group in similar_mood:
+                        similar_moods = Mood.objects.filter(group=group)
+
+                        for similar_mood in similar_moods:
+                            similar_mood_id.append(similar_mood.id)
+
+                    for i in similar_mood_id:
                         moods = Cocktail_Mood.objects.filter(mood_id=i)
 
                         for mood in moods:
