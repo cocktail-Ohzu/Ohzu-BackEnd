@@ -107,19 +107,19 @@ class RecommendView(APIView):
                 if tag_id == 'flavor_id':
                     flavor_cocktail = []
 
-                    # 검색한 맛과 유사한 태그 저장 리스트
-                    similar_flavor = []
+                    # 검색한 맛, 그 맛과 유사한 태그의 group 값을 저장하는 리스트
+                    similar_flavor_group = []
 
                     # 유사한 태그의 id 저장 리스트
                     similar_flavor_id = []
 
                     for i in request.data['flavor_id']:
                         selected_flavor = Flavor.objects.get(id=i)
-                        similar_flavor.append(selected_flavor.group)
+                        similar_flavor_group.append(selected_flavor.group)
 
-                    similar_flavor = list(set(similar_flavor))
+                    similar_flavor_group = list(set(similar_flavor_group))
 
-                    for group in similar_flavor:
+                    for group in similar_flavor_group:
                         similar_flavors = Flavor.objects.filter(group=group)
 
                         for similar_flavor in similar_flavors:
@@ -139,19 +139,19 @@ class RecommendView(APIView):
                 if tag_id == 'mood_id':
                     mood_cocktail = []
 
-                    # 검색한 맛과 유사한 태그 저장 리스트
-                    similar_mood = []
+                    # 검색한 무드/기분, 그 무드/기분과 유사한 태그의 group 값을 저장하는 리스트
+                    similar_mood_group = []
 
                     # 유사한 태그의 id 저장 리스트
                     similar_mood_id = []
 
                     for i in request.data['mood_id']:
                         selected_mood = Mood.objects.get(id=i)
-                        similar_mood.append(selected_mood.group)
+                        similar_mood_group.append(selected_mood.group)
 
-                    similar_mood = list(set(similar_mood))
+                    similar_mood_group = list(set(similar_mood_group))
 
-                    for group in similar_mood:
+                    for group in similar_mood_group:
                         similar_moods = Mood.objects.filter(group=group)
 
                         for similar_mood in similar_moods:
