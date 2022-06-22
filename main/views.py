@@ -63,7 +63,8 @@ class SearchTagView(APIView):
 
 # 추천 페이지
 class RecommendView(APIView):
-    def get(self, request):
+
+    def post(self, request):
         try:
             # 딱 맞는 결과가 없을 경우, 빈도가 가장 많은, 유사한 칵테일을 추천하기 위한 리스트
             result_cocktail = []
