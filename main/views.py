@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from datetime import datetime
 from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Cocktail_Flavor, Cocktail_Mood, Cocktail_Weather, \
-    Cocktail_Ornament, Flavor, Mood
+    Cocktail_Ornament, Flavor, Mood, Base
 from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer, SearchSerializer, \
     RecommendSerializer
 
@@ -239,7 +239,7 @@ class RecommendView(APIView):
                         similar_result.append(similar_serializer.data)
 
                     # 유사한 칵테일 반환
-                    return Response({"similar cocktails": similar_result}, status=status.HTTP_200_OK)
+                    return Response({"similar_cocktails": similar_result}, status=status.HTTP_200_OK)
 
             # 조건에 모두 맞는 칵테일이 있는 경우, 그 칵테일의 id를 유사한 칵테일 리스트에서 삭제
             for i in intersection:
@@ -254,8 +254,8 @@ class RecommendView(APIView):
                 similar_result.append(similar_serializer.data)
 
             # 만족하는 교집합이 있다면 맞는 칵테일과 다른 추천 칵테일 정보 제공
-            return Response({"fit cocktails": fit_result,
-                             "similar cocktails": similar_result}, status=status.HTTP_200_OK)
+            return Response({"fit_cocktails": fit_result,
+                             "similar_cocktails": similar_result}, status=status.HTTP_200_OK)
 
         except:
             return Response({"message": "error"}, status=status.HTTP_400_BAD_REQUEST)
