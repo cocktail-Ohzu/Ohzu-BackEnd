@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from datetime import datetime
 from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Cocktail_Flavor, Cocktail_Mood, Cocktail_Weather, \
-    Cocktail_Ornament, Flavor, Mood
+    Cocktail_Ornament, Flavor, Mood, Base, Ingredient, Weather, Ornament
 from .serializers import MainSerializer, DetailSerializer, BaseSerializer, IngredientSerializer, SearchSerializer, \
-    RecommendSerializer
+    RecommendSerializer, RecommendBaseSerializer, RecommendIngredientSerializer, RecommendMoodSerializer, \
+    RecommendOrnamentSerializer, RecommendWeatherSerializer, RecommendFlavorSerializer
 
 # 도수 기준 (standard_strength[index] = [시작 도수, 끝 도수])
 standard_strength = [[0, 0], [1, 10], [12, 20], [32, 40]]
@@ -63,6 +64,32 @@ class SearchTagView(APIView):
 
 # 추천 페이지
 class RecommendView(APIView):
+    # 추천 필드 제공 api
+    def get(self, request):
+        try:
+            bases = Base.objects.all()
+            ingredients = Ingredient.objects.all()
+            flavors = Flavor.objects.all()
+            moods = Mood.objects.all()
+            weathers = Weather.objects.all()
+            ornaments = Ornament.objects.all()
+
+            bases_serializer = RecommendBaseSerializer(bases, many=True)
+            ingredients_serializer = RecommendIngredientSerializer(ingredients, many=True)
+            flavors_serializer = RecommendFlavorSerializer(flavors, many=True)
+            moods_serializer = RecommendMoodSerializer(moods, many=True)
+            weathers_serializer = RecommendWeatherSerializer(weathers, many=True)
+            ornaments_serializer = RecommendOrnamentSerializer(ornaments, many=True)
+
+            return Response({"bases": bases_serializer.data,
+                             "ingredients": ingredients_serializer.data,
+                             "flavors": flavors_serializer.data,
+                             "moods": moods_serializer.data,
+                             "weathers": weathers_serializer.data,
+                             "ornaments": ornaments_serializer.data})
+
+        except:
+            return Response({"message": "error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
         try:
