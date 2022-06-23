@@ -6,6 +6,7 @@ class Base(models.Model):
     name = models.CharField(max_length=20, unique=True)
     desc = models.CharField(max_length=50, blank=True, null=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
+    img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
 
     def __str__(self):
         return self.name
@@ -16,6 +17,7 @@ class Flavor(models.Model):
     name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
     group = models.PositiveIntegerField(default=0)  # 그룹
+    img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
 
     def __str__(self):
         return self.name
@@ -26,6 +28,7 @@ class Mood(models.Model):
     name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
     group = models.PositiveIntegerField(default=0)  # 그룹
+    img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
 
     def __str__(self):
         return self.name
@@ -35,6 +38,7 @@ class Mood(models.Model):
 class Ornament(models.Model):
     name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
+    img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
 
     def __str__(self):
         return self.name
@@ -45,6 +49,7 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=30, unique=True)
     desc = models.CharField(max_length=50, blank=True, null=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
+    img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
 
     def __str__(self):
         return self.name
@@ -54,6 +59,7 @@ class Ingredient(models.Model):
 class Weather(models.Model):
     name = models.CharField(max_length=20, unique=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
+    img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
 
     def __str__(self):
         return self.name
