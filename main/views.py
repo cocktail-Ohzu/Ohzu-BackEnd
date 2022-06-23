@@ -234,8 +234,8 @@ class RecommendView(APIView):
                 if len(intersection) == 0:
 
                     for cocktail_id in result:
-                        similar_cocktails = Cocktail.objects.filter(id=cocktail_id)
-                        similar_serializer = RecommendSerializer(similar_cocktails, many=True)
+                        similar_cocktails = Cocktail.objects.get(id=cocktail_id)
+                        similar_serializer = RecommendSerializer(similar_cocktails)
                         similar_result.append(similar_serializer.data)
 
                     # 유사한 칵테일 반환
@@ -244,13 +244,13 @@ class RecommendView(APIView):
             # 조건에 모두 맞는 칵테일이 있는 경우, 그 칵테일의 id를 유사한 칵테일 리스트에서 삭제
             for i in intersection:
                 result.remove(i)
-                fit_cocktails = Cocktail.objects.filter(id=i)
-                fit_serializer = RecommendSerializer(fit_cocktails, many=True)
+                fit_cocktails = Cocktail.objects.get(id=i)
+                fit_serializer = RecommendSerializer(fit_cocktails)
                 fit_result.append(fit_serializer.data)
 
             for cocktail_id in result:
-                similar_cocktails = Cocktail.objects.filter(id=cocktail_id)
-                similar_serializer = RecommendSerializer(similar_cocktails, many=True)
+                similar_cocktails = Cocktail.objects.get(id=cocktail_id)
+                similar_serializer = RecommendSerializer(similar_cocktails)
                 similar_result.append(similar_serializer.data)
 
             # 만족하는 교집합이 있다면 맞는 칵테일과 다른 추천 칵테일 정보 제공

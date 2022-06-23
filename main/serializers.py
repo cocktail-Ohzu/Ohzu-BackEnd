@@ -139,8 +139,45 @@ class SearchSerializer(serializers.ModelSerializer):
                   'bases', 'ingredients', 'flavors', 'moods', 'weathers', 'ornaments']
 
 
+# 맞춤 칵테일 추천
 class RecommendSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Cocktail
-        fields = ['id', 'name', 'img']
+        fields = ['id', 'name', 'img', 'background_color']
+
+
+# 추천 선택지 제공
+class RecommendBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Base
+        fields = ['id', 'name', 'img', 'tag_color']
+
+
+class RecommendIngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        fields = ['id', 'name', 'img', 'tag_color']
+
+
+class RecommendFlavorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Flavor
+        fields = ['id', 'name', 'img', 'tag_color']
+
+
+class RecommendMoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mood
+        fields = ['id', 'name', 'img', 'tag_color']
+
+
+class RecommendWeatherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Weather
+        fields = ['id', 'name', 'img', 'tag_color']
+
+
+class RecommendOrnamentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ornament
+        fields = ['id', 'name', 'img', 'tag_color']
