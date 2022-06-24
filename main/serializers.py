@@ -156,7 +156,7 @@ class RecommendBaseSerializer(serializers.ModelSerializer):
 class RecommendIngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'img', 'tag_color']
+        fields = ['id', 'name', 'img', 'tag_color', 'desc']
 
 
 class RecommendFlavorSerializer(serializers.ModelSerializer):
