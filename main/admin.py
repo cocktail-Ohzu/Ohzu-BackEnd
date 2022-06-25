@@ -36,7 +36,7 @@ class WeatherAdmin(admin.ModelAdmin):
 @admin.register(Cocktail)
 class CocktailAdmin(admin.ModelAdmin):
     filter_horizontal = ('bases', 'flavors', 'moods', 'ornaments', 'ingredients', 'weathers',)
-    list_display = ['id', 'name', 'eng_name', 'img', 'background_color', 'desc', 'strength', 'cocktail_color', 'recipe', 'ohzu_point',
+    list_display = ['id', 'name', 'eng_name', 'img', 'img2', 'background_color', 'desc', 'strength', 'cocktail_color', 'recipe', 'ohzu_point',
                     'get_bases', 'get_flavors', 'get_moods', 'get_ornaments', 'get_ingredients', 'get_weathers']
 
 
