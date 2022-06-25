@@ -6,7 +6,7 @@ from .models import Cocktail, Cocktail_Base, Cocktail_Ingredient, Ingredient, Ba
 class MainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cocktail
-        fields = ['id', 'img', 'background_color', 'name', 'eng_name', 'desc', 'strength']
+        fields = ['id', 'img', 'img2', 'background_color', 'name', 'eng_name', 'desc', 'strength']
 
 
 # 디테일
@@ -66,7 +66,7 @@ class DetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cocktail
-        fields = ['id', 'name', 'eng_name', 'background_color', 'img', 'desc', 'strength',
+        fields = ['id', 'name', 'eng_name', 'background_color', 'img', 'img2', 'desc', 'strength',
                   'flavors', 'moods', 'weathers', 'ornaments',
                   'recipe', 'ohzu_point']
 
@@ -135,7 +135,7 @@ class SearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cocktail
-        fields = ['id', 'name', 'eng_name', 'img', 'background_color',
+        fields = ['id', 'name', 'eng_name', 'img', 'img2', 'background_color',
                   'bases', 'ingredients', 'flavors', 'moods', 'weathers', 'ornaments']
 
 
@@ -143,7 +143,7 @@ class SearchSerializer(serializers.ModelSerializer):
 class RecommendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cocktail
-        fields = ['id', 'name', 'img', 'background_color']
+        fields = ['id', 'name', 'img', 'img2', 'background_color']
 
 
 # 추천 선택지 제공
