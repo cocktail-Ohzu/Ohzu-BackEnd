@@ -7,7 +7,6 @@ class Base(models.Model):
     desc = models.CharField(max_length=50, blank=True, null=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
     img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
-    img2 = models.URLField(null=True)
 
     def __str__(self):
         return self.name
@@ -71,6 +70,7 @@ class Cocktail(models.Model):
     name = models.CharField(max_length=20, unique=True)
     eng_name = models.CharField(max_length=20)
     img = models.URLField()
+    img2 = models.URLField(blank=True)
     background_color = models.CharField(max_length=20)
     desc = models.CharField(max_length=50)  # 한줄 소개
     strength = models.IntegerField()
