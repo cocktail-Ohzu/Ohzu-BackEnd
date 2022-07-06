@@ -68,21 +68,26 @@ class RecommendView(APIView):
     def get(self, request):
         try:
             bases = Base.objects.all()
-            ingredients = Ingredient.objects.all()
             flavors = Flavor.objects.all()
             moods = Mood.objects.all()
             weathers = Weather.objects.all()
             ornaments = Ornament.objects.all()
 
+            ingredients_id = [2, 3, 9, 11, 18, 22, 24, 27, 28, 29, 31, 32, 35, 36, 38, 40]
+            ingredients_list = []
+            for ingredient_id in ingredients_id:
+                ingredients = Ingredient.objects.get(id=ingredient_id)
+                ingredient_serializer = RecommendIngredientSerializer(ingredients)
+                ingredients_list.append(ingredient_serializer.data)
+
             bases_serializer = RecommendBaseSerializer(bases, many=True)
-            ingredients_serializer = RecommendIngredientSerializer(ingredients, many=True)
             flavors_serializer = RecommendFlavorSerializer(flavors, many=True)
             moods_serializer = RecommendMoodSerializer(moods, many=True)
             weathers_serializer = RecommendWeatherSerializer(weathers, many=True)
             ornaments_serializer = RecommendOrnamentSerializer(ornaments, many=True)
 
             return Response({"bases": bases_serializer.data,
-                             "ingredients": ingredients_serializer.data,
+                             "ingredients": ingredients_list,
                              "flavors": flavors_serializer.data,
                              "moods": moods_serializer.data,
                              "weathers": weathers_serializer.data,
