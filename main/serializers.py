@@ -150,34 +150,34 @@ class RecommendSerializer(serializers.ModelSerializer):
 class RecommendBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Base
-        fields = ['id', 'name', 'img', 'tag_color', 'desc']
+        fields = ['id', 'name', 'tag_color', 'desc']
 
 
 class RecommendIngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'img', 'tag_color', 'desc']
+        fields = ['id', 'name', 'tag_color', 'desc', 'category']
 
 
 class RecommendFlavorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flavor
-        fields = ['id', 'name', 'img', 'tag_color']
+        fields = ['id', 'name', 'tag_color']
 
 
 class RecommendMoodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mood
-        fields = ['id', 'name', 'img', 'tag_color']
+        fields = ['id', 'name', 'tag_color']
 
 
 class RecommendWeatherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Weather
-        fields = ['id', 'name', 'img', 'tag_color']
+        fields = ['id', 'name', 'tag_color']
 
 
 class RecommendOrnamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ornament
-        fields = ['id', 'name', 'img', 'tag_color']
+        fields = ['id', 'name', 'tag_color']
