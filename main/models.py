@@ -50,6 +50,7 @@ class Ingredient(models.Model):
     desc = models.CharField(max_length=50, blank=True, null=True)
     tag_color = models.CharField(max_length=10, blank=True, null=True)  # 태그 색상
     img = models.URLField(null=True)  # 추천 필드에 뜰 이미지
+    category = models.CharField(max_length=30, blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -79,16 +79,13 @@ class RecommendView(APIView):
     # 추천 필드 제공 api
     def get(self, request):
         try:
-            # ingredients_id = [2, 3, 9, 11, 18, 22, 24, 27, 28, 29, 31, 32, 35, 36, 38, 40]
-            essence_or_alcohol = [24, 28, 29, 32, 35]
-            juice = [11, 18, 27, 30, 31]
-            soft_drink = [2, 22, 38, 40]
-            etc = [3, 9]
+            ingredients_id = [2, 3, 9, 11, 18, 22, 24, 27, 28, 29, 31, 32, 35, 36, 38, 40]
+            ingredients_list = []
 
-            essence_or_alcohol_list = []
-            juice_list = []
-            soft_drink_list = []
-            etc_list = []
+            for ingredient_id in ingredients_id:
+                ingredients = Ingredient.objects.get(id=ingredient_id)
+                ingredient_serializer = RecommendIngredientSerializer(ingredients)
+                ingredients_list.append(ingredient_serializer.data)
 
             bases_serializer = RecommendBaseSerializer(Base.objects.all(), many=True)
             flavors_serializer = RecommendFlavorSerializer(Flavor.objects.all(), many=True)
@@ -97,13 +94,7 @@ class RecommendView(APIView):
             ornaments_serializer = RecommendOrnamentSerializer(Ornament.objects.all(), many=True)
 
             return Response({"bases": bases_serializer.data,
-                             "ingredients":
-                                 {
-                                     "essence_or_alcohol": ingredient_result(essence_or_alcohol, essence_or_alcohol_list),
-                                     "juice": ingredient_result(juice, juice_list),
-                                     "soft_drink": ingredient_result(soft_drink, soft_drink_list),
-                                     "etc": ingredient_result(etc, etc_list)
-                                 },
+                             "ingredients": ingredients_list,
                              "flavors": flavors_serializer.data,
                              "moods": moods_serializer.data,
                              "weathers": weathers_serializer.data,
