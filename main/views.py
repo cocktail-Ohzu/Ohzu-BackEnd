@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
@@ -120,188 +122,208 @@ class RecommendView(APIView):
             # 유저가 추천 받고자 하는 필드 저장
             id_list = list(request.data)
 
-            for tag_id in id_list:
+            # 요청이 없는 경우, random으로 칵테일 추천
+            if len(id_list) == 0:
+                random_ids = []
+                recommend_result = []
 
-                # 베이스 추천
-                if tag_id == 'base_id':
-                    base_cocktail = []
+                while len(random_ids) < 4:
+                    random_id = random.randrange(1, 36)
+                    if random_id in random_ids:
+                        continue
+                    else:
+                        random_ids.append(random_id)
 
-                    for i in request.data['base_id']:
-                        bases = Cocktail_Base.objects.filter(base_id=i)
+                for cocktail_id in random_ids:
+                    recommend_cocktails = Cocktail.objects.get(id=cocktail_id)
+                    recommend_serializer = RecommendSerializer(recommend_cocktails)
+                    recommend_result.append(recommend_serializer.data)
 
-                        for base in bases:
-                            result_cocktail.append(base.cocktail_id)
-                            base_cocktail.append(base.cocktail_id)
+                return Response({"recommend_cocktails": recommend_result}, status=status.HTTP_303_SEE_OTHER)
 
-                    data.append(base_cocktail)
-                    continue
+            else:
+                for tag_id in id_list:
 
-                # 재료 추천
-                if tag_id == 'ingredient_id':
-                    ingredient_cocktail = []
+                    # 베이스 추천
+                    if tag_id == 'base_id':
+                        base_cocktail = []
 
-                    for i in request.data['ingredient_id']:
-                        ingredients = Cocktail_Ingredient.objects.filter(ingredient_id=i)
+                        for i in request.data['base_id']:
+                            bases = Cocktail_Base.objects.filter(base_id=i)
 
-                        for ingredient in ingredients:
-                            result_cocktail.append(ingredient.cocktail_id)
-                            ingredient_cocktail.append(ingredient.cocktail_id)
+                            for base in bases:
+                                result_cocktail.append(base.cocktail_id)
+                                base_cocktail.append(base.cocktail_id)
 
-                    data.append(ingredient_cocktail)
-                    continue
+                        data.append(base_cocktail)
+                        continue
 
-                # 맛 추천
-                if tag_id == 'flavor_id':
-                    flavor_cocktail = []
+                    # 재료 추천
+                    if tag_id == 'ingredient_id':
+                        ingredient_cocktail = []
 
-                    # 검색한 맛, 그 맛과 유사한 태그의 group 값을 저장하는 리스트
-                    similar_flavor_group = []
+                        for i in request.data['ingredient_id']:
+                            ingredients = Cocktail_Ingredient.objects.filter(ingredient_id=i)
 
-                    # 유사한 태그의 id 저장 리스트
-                    similar_flavor_id = []
+                            for ingredient in ingredients:
+                                result_cocktail.append(ingredient.cocktail_id)
+                                ingredient_cocktail.append(ingredient.cocktail_id)
 
-                    for i in request.data['flavor_id']:
-                        selected_flavor = Flavor.objects.get(id=i)
-                        similar_flavor_group.append(selected_flavor.group)
+                        data.append(ingredient_cocktail)
+                        continue
 
-                    similar_flavor_group = list(set(similar_flavor_group))
+                    # 맛 추천
+                    if tag_id == 'flavor_id':
+                        flavor_cocktail = []
 
-                    for group in similar_flavor_group:
-                        similar_flavors = Flavor.objects.filter(group=group)
+                        # 검색한 맛, 그 맛과 유사한 태그의 group 값을 저장하는 리스트
+                        similar_flavor_group = []
 
-                        for similar_flavor in similar_flavors:
-                            similar_flavor_id.append(similar_flavor.id)
+                        # 유사한 태그의 id 저장 리스트
+                        similar_flavor_id = []
 
-                    for i in similar_flavor_id:
-                        flavors = Cocktail_Flavor.objects.filter(flavor_id=i)
+                        for i in request.data['flavor_id']:
+                            selected_flavor = Flavor.objects.get(id=i)
+                            similar_flavor_group.append(selected_flavor.group)
 
-                        for flavor in flavors:
-                            result_cocktail.append(flavor.cocktail_id)
-                            flavor_cocktail.append(flavor.cocktail_id)
+                        similar_flavor_group = list(set(similar_flavor_group))
 
-                    data.append(flavor_cocktail)
-                    continue
+                        for group in similar_flavor_group:
+                            similar_flavors = Flavor.objects.filter(group=group)
 
-                # 무드/기분 추천
-                if tag_id == 'mood_id':
-                    mood_cocktail = []
+                            for similar_flavor in similar_flavors:
+                                similar_flavor_id.append(similar_flavor.id)
 
-                    # 검색한 무드/기분, 그 무드/기분과 유사한 태그의 group 값을 저장하는 리스트
-                    similar_mood_group = []
+                        for i in similar_flavor_id:
+                            flavors = Cocktail_Flavor.objects.filter(flavor_id=i)
 
-                    # 유사한 태그의 id 저장 리스트
-                    similar_mood_id = []
+                            for flavor in flavors:
+                                result_cocktail.append(flavor.cocktail_id)
+                                flavor_cocktail.append(flavor.cocktail_id)
 
-                    for i in request.data['mood_id']:
-                        selected_mood = Mood.objects.get(id=i)
-                        similar_mood_group.append(selected_mood.group)
+                        data.append(flavor_cocktail)
+                        continue
 
-                    similar_mood_group = list(set(similar_mood_group))
+                    # 무드/기분 추천
+                    if tag_id == 'mood_id':
+                        mood_cocktail = []
 
-                    for group in similar_mood_group:
-                        similar_moods = Mood.objects.filter(group=group)
+                        # 검색한 무드/기분, 그 무드/기분과 유사한 태그의 group 값을 저장하는 리스트
+                        similar_mood_group = []
 
-                        for similar_mood in similar_moods:
-                            similar_mood_id.append(similar_mood.id)
+                        # 유사한 태그의 id 저장 리스트
+                        similar_mood_id = []
 
-                    for i in similar_mood_id:
-                        moods = Cocktail_Mood.objects.filter(mood_id=i)
+                        for i in request.data['mood_id']:
+                            selected_mood = Mood.objects.get(id=i)
+                            similar_mood_group.append(selected_mood.group)
 
-                        for mood in moods:
-                            result_cocktail.append(mood.cocktail_id)
-                            mood_cocktail.append(mood.cocktail_id)
+                        similar_mood_group = list(set(similar_mood_group))
 
-                    data.append(mood_cocktail)
-                    continue
+                        for group in similar_mood_group:
+                            similar_moods = Mood.objects.filter(group=group)
 
-                # 날씨/계절 추천
-                if tag_id == 'weather_id':
-                    weather_cocktail = []
+                            for similar_mood in similar_moods:
+                                similar_mood_id.append(similar_mood.id)
 
-                    for i in request.data['weather_id']:
-                        weathers = Cocktail_Weather.objects.filter(weather_id=i)
+                        for i in similar_mood_id:
+                            moods = Cocktail_Mood.objects.filter(mood_id=i)
 
-                        for weather in weathers:
-                            result_cocktail.append(weather.cocktail_id)
-                            weather_cocktail.append(weather.cocktail_id)
+                            for mood in moods:
+                                result_cocktail.append(mood.cocktail_id)
+                                mood_cocktail.append(mood.cocktail_id)
 
-                    data.append(weather_cocktail)
-                    continue
+                        data.append(mood_cocktail)
+                        continue
 
-                # 가니쉬 추천
-                if tag_id == 'ornament_id':
-                    ornament_cocktail = []
+                    # 날씨/계절 추천
+                    if tag_id == 'weather_id':
+                        weather_cocktail = []
 
-                    for i in request.data['ornament_id']:
-                        ornaments = Cocktail_Ornament.objects.filter(ornament_id=i)
+                        for i in request.data['weather_id']:
+                            weathers = Cocktail_Weather.objects.filter(weather_id=i)
 
-                        for ornament in ornaments:
-                            result_cocktail.append(ornament.cocktail_id)
-                            ornament_cocktail.append(ornament.cocktail_id)
+                            for weather in weathers:
+                                result_cocktail.append(weather.cocktail_id)
+                                weather_cocktail.append(weather.cocktail_id)
 
-                    data.append(ornament_cocktail)
-                    continue
+                        data.append(weather_cocktail)
+                        continue
 
-                # 도수 추천
-                if tag_id == 'strength':
-                    strength_cocktail = []
+                    # 가니쉬 추천
+                    if tag_id == 'ornament_id':
+                        ornament_cocktail = []
 
-                    for i in request.data['strength']:
-                        cocktails = Cocktail.objects.filter(strength__range=strength_range(i))
+                        for i in request.data['ornament_id']:
+                            ornaments = Cocktail_Ornament.objects.filter(ornament_id=i)
 
-                        for cocktail in cocktails:
-                            result_cocktail.append(cocktail.id)
-                            strength_cocktail.append(cocktail.id)
+                            for ornament in ornaments:
+                                result_cocktail.append(ornament.cocktail_id)
+                                ornament_cocktail.append(ornament.cocktail_id)
 
-                    data.append(strength_cocktail)
-                    continue
+                        data.append(ornament_cocktail)
+                        continue
 
-            # 유사한 칵테일 id 리스트
-            similar_result = []
+                    # 도수 추천
+                    if tag_id == 'strength':
+                        strength_cocktail = []
 
-            # 조건을 모두 만족 시키는 칵테일 id 리스트
-            fit_result = []
+                        for i in request.data['strength']:
+                            cocktails = Cocktail.objects.filter(strength__range=strength_range(i))
 
-            # 사용자가 선택한 필드들에 맞는 칵테일 빈도수 높은 순으로 정렬
-            result = []
-            result_cocktail = sorted(result_cocktail, key=lambda x: result_cocktail.count(x), reverse=True)
-            for v in result_cocktail:
-                if v not in result:
-                    result.append(v)
+                            for cocktail in cocktails:
+                                result_cocktail.append(cocktail.id)
+                                strength_cocktail.append(cocktail.id)
 
-            # 사용자가 선택한 필드들을 모두 만족하는 칵테일 얻기 위한 교집합 intersection 변수
-            intersection = list(set(data[0]))
+                        data.append(strength_cocktail)
+                        continue
 
-            # data에 담긴 리스트들을 돌면서 교집합 확인
-            for i in range(1, len(data)):
-                intersection = list((set(intersection) & set(data[i])))
+                # 유사한 칵테일 id 리스트
+                similar_result = []
 
-                # 조건에 모두 맞는 칵테일이 없는 경우
-                if len(intersection) == 0:
+                # 조건을 모두 만족 시키는 칵테일 id 리스트
+                fit_result = []
 
-                    for cocktail_id in result:
-                        similar_cocktails = Cocktail.objects.get(id=cocktail_id)
-                        similar_serializer = RecommendSerializer(similar_cocktails)
-                        similar_result.append(similar_serializer.data)
+                # 사용자가 선택한 필드들에 맞는 칵테일 빈도수 높은 순으로 정렬
+                result = []
+                result_cocktail = sorted(result_cocktail, key=lambda x: result_cocktail.count(x), reverse=True)
+                for v in result_cocktail:
+                    if v not in result:
+                        result.append(v)
 
-                    # 유사한 칵테일 반환
-                    return Response({"similar_cocktails": similar_result}, status=status.HTTP_200_OK)
+                # 사용자가 선택한 필드들을 모두 만족하는 칵테일 얻기 위한 교집합 intersection 변수
+                intersection = list(set(data[0]))
 
-            # 조건에 모두 맞는 칵테일이 있는 경우, 그 칵테일의 id를 유사한 칵테일 리스트에서 삭제
-            for i in intersection:
-                result.remove(i)
-                fit_cocktails = Cocktail.objects.get(id=i)
-                fit_serializer = RecommendSerializer(fit_cocktails)
-                fit_result.append(fit_serializer.data)
+                # data에 담긴 리스트들을 돌면서 교집합 확인
+                for i in range(1, len(data)):
+                    intersection = list((set(intersection) & set(data[i])))
 
-            for cocktail_id in result:
-                similar_cocktails = Cocktail.objects.get(id=cocktail_id)
-                similar_serializer = RecommendSerializer(similar_cocktails)
-                similar_result.append(similar_serializer.data)
+                    # 조건에 모두 맞는 칵테일이 없는 경우
+                    if len(intersection) == 0:
 
-            # 만족하는 교집합이 있다면 맞는 칵테일과 다른 추천 칵테일 정보 제공
-            return Response({"fit_cocktails": fit_result,
-                             "similar_cocktails": similar_result}, status=status.HTTP_200_OK)
+                        for cocktail_id in result:
+                            similar_cocktails = Cocktail.objects.get(id=cocktail_id)
+                            similar_serializer = RecommendSerializer(similar_cocktails)
+                            similar_result.append(similar_serializer.data)
+
+                        # 유사한 칵테일 반환
+                        return Response({"similar_cocktails": similar_result}, status=status.HTTP_200_OK)
+
+                # 조건에 모두 맞는 칵테일이 있는 경우, 그 칵테일의 id를 유사한 칵테일 리스트에서 삭제
+                for i in intersection:
+                    result.remove(i)
+                    fit_cocktails = Cocktail.objects.get(id=i)
+                    fit_serializer = RecommendSerializer(fit_cocktails)
+                    fit_result.append(fit_serializer.data)
+
+                for cocktail_id in result:
+                    similar_cocktails = Cocktail.objects.get(id=cocktail_id)
+                    similar_serializer = RecommendSerializer(similar_cocktails)
+                    similar_result.append(similar_serializer.data)
+
+                # 만족하는 교집합이 있다면 맞는 칵테일과 다른 추천 칵테일 정보 제공
+                return Response({"fit_cocktails": fit_result,
+                                 "similar_cocktails": similar_result}, status=status.HTTP_200_OK)
 
         except:
             return Response({"message": "error"}, status=status.HTTP_400_BAD_REQUEST)
