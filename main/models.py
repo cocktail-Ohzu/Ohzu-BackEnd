@@ -71,7 +71,8 @@ class Cocktail(models.Model):
     name = models.CharField(max_length=20, unique=True)
     eng_name = models.CharField(max_length=20)
     img = models.URLField()
-    img2 = models.URLField(blank=True)
+    img2 = models.URLField(blank=True)  # 정방형 이미지
+    img3 = models.URLField(blank=True)  # 레시피에 뜰 이미지
     background_color = models.CharField(max_length=20)
     desc = models.CharField(max_length=50)  # 한줄 소개
     strength = models.IntegerField()
