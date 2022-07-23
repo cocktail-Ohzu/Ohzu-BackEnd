@@ -34,7 +34,7 @@ def ingredient_result(category, category_list):
 class MainCocktailView(APIView):
     def get(self, request):
         today = datetime.today()
-        today_cocktail = (today.year + today.month + today.day) % 36  # 오늘의 추천 칵테일 랜덤
+        today_cocktail = (today.year + today.month + today.day) % 35 + 1 # 오늘의 추천 칵테일 랜덤
         cocktail = get_object_or_404(Cocktail, id=today_cocktail + 1)
         serializer = MainSerializer(cocktail)
         return Response(serializer.data)
