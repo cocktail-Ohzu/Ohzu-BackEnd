@@ -1,1 +1,1 @@
-오쥬 backend reposhge
+오쥬 backend repository
