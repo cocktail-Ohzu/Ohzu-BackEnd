@@ -93,6 +93,7 @@ class BaseSerializer(serializers.ModelSerializer):
 class IngredientSerializer(serializers.ModelSerializer):
     ingredient = serializers.SerializerMethodField()
     tag_color = serializers.SerializerMethodField()
+    desc = serializers.SerializerMethodField()
 
     def get_ingredient(self,obj):
         return obj.ingredient.name
@@ -100,9 +101,12 @@ class IngredientSerializer(serializers.ModelSerializer):
     def get_tag_color(self, obj):
         return obj.ingredient.tag_color
 
+    def get_desc(self, obj):
+        return obj.ingredient.desc
+
     class Meta:
         model = Cocktail_Ingredient
-        fields = ['ingredient', 'tag_color', 'amount']
+        fields = ['ingredient', 'tag_color', 'amount', 'desc']
 
 
 # 검색 api
