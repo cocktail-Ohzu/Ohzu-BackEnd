@@ -130,7 +130,7 @@ class RecommendView(APIView):
                     recommend_serializer = RecommendSerializer(recommend_cocktails)
                     recommend_result.append(recommend_serializer.data)
 
-                return Response({"similar_cocktails": recommend_result}, status=status.HTTP_303_SEE_OTHER)
+                return Response({"similar_cocktails": recommend_result}, status=status.HTTP_200_OK)
 
             else:
                 for tag_id in id_list:
