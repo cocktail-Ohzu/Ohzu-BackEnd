@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # app
     'main',
+    'landingpage',
 ]
 
 MIDDLEWARE = [
