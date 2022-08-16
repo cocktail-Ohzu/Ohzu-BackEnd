@@ -8,7 +8,7 @@ from landingpage.serializers import ResultSerializer
 
 # 결과 페이지
 class ResultView(APIView):
-    def get(self, request):
+    def post(self, request):
         mbti = ''
         answer = request.data['data']
 
