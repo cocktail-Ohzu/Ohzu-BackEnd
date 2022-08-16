@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from landingpage.models import Result
+
+
+@admin.register(Result)
+class BaseAdmin(admin.ModelAdmin):
+    pass
