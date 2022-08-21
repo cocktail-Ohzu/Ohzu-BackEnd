@@ -13,14 +13,11 @@ class QuestionView(APIView):
 
         random_questions = random.sample(question_list, 9)
         print(random_questions)
-        d = dict()
+        l = []
         for question in random_questions:
-            d[question.id] = {
-                "question": question.title,
-                "attribute": question.attribute
-            }
+            l.append({"question": question.title, "attribute": question.attribute})
 
-        return Response({"data": d}, status=status.HTTP_200_OK)
+        return Response({"data": l}, status=status.HTTP_200_OK)
 
 
 
