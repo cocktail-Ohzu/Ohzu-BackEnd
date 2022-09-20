@@ -6,7 +6,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.prod
-    command: gunicorn Ohzu-BackEnd.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn Ohzu-BackEnd.wsgi:application --bind 0.0.0.0:8000 --timeout=120
     environment:
       DJANGO_SETTINGS_MODULE: Ohzu-BackEnd.settings.prod
     env_file:

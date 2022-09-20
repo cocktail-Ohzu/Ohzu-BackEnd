@@ -79,7 +79,7 @@ class RecommendView(APIView):
     # 추천 필드 제공 api
     def get(self, request):
         try:
-            ingredients_id = [2, 3, 9, 11, 18, 22, 24, 27, 28, 29, 31, 32, 35, 36, 38, 40]
+            ingredients_id = [2, 3, 9, 11, 18, 22, 24, 27, 28, 29, 30, 31, 32, 35, 36, 38, 40]
             ingredients_list = []
 
             for ingredient_id in ingredients_id:
