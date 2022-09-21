@@ -146,20 +146,17 @@
             <B>✔️ 프로젝트 ERD modeling</br>
             <B>✔️ 검색(이름, 태그검색) API 구현</br>
             <B>✔️ 칵테일 세부조회 API 구현</br>
-            <B>✔️ 렌딩페이지 ERD modeling</br>
-            <B>✔️ 렌딩페이지 서버 세팅 및 배포</br>
-            <B>✔️ 렌딩페이지 질문페이지 API 구현</br>
+            <B>✔️ 랜딩페이지 ERD modeling</br>
+            <B>✔️ 랜딩페이지 서버 세팅 및 배포</br>
+            <B>✔️ 랜딩페이지 질문페이지 API 구현</br>
         </td>
         <td align="center">
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
-            <B>✔️ </br>
+            <B>✔️ 칵테일 DB setup</br>
+            <B>✔️ 프로젝트 ERD 수정</br>
+            <B>✔️ 메인페이지(오늘의 추천 칵테일) API 구현</br>
+            <B>✔️ 칵테일 추천 API 구현</br>
+            <B>✔️ 랜딩페이지 ERD modeling</br>
+            <B>✔️ 랜딩페이지 결과페이지 API 구현</br>
         </td>
     </tr>
 </table>
